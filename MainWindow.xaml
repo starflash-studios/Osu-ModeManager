@@ -1,0 +1,28 @@
+﻿<mah:MetroWindow x:Class="OsuModeManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Background="#242424"
+        Title="Osu!ModeManager" Height="450" Width="300">
+    <Grid Margin="10">
+        <StackPanel Orientation="Vertical">
+            <Grid Height="34" VerticalAlignment="Top">
+                <Label Content="osu!lazer Version: " VerticalAlignment="Center" HorizontalAlignment="Left" Width="110"/>
+                <ComboBox x:Name="LazerVersionCombo" Height="32" Margin="110,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+            </Grid>
+            <Separator Margin="4"/>
+            <ListBox x:Name="GamemodeList" Height="265" HorizontalAlignment="Stretch" MouseDoubleClick="GamemodeList_MouseDoubleClick"/>
+            <Separator Margin="4"/>
+            <StackPanel Orientation="Horizontal" Height="32" HorizontalAlignment="Center">
+                <Button x:Name="GamemodeListAdd" Content="Add" Width="72" Click="GamemodeListAdd_Click"/>
+                <Rectangle Width="16"/>
+                <Button x:Name="GamemodeListRemove" Content="Remove" Width="72" Click="GamemodeListRemove_Click"/>
+            </StackPanel>
+            <Separator Margin="4"/>
+            <Button x:Name="UpdateCheckButton" Content="Check for updates" Height="40" Click="UpdateCheckButton_Click"/>
+        </StackPanel>
+    </Grid>
+</mah:MetroWindow>
