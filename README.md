@@ -1,5 +1,5 @@
 # OsuModeManager
-*A GitHub-based osu!lazer custom gamemode update checker
+*A GitHub-based osu!lazer custom gamemode update checker*
 
 # Getting Started
 1. Locate your osu!lazer install (generally `C:\Users\[USER-NAME]\AppData\Local\osulazer\`)
