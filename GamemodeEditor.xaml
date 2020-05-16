@@ -1,4 +1,4 @@
-﻿<mah:MetroWindow x:Class="OsuModeManager.GamemodeViewer"
+﻿<mah:MetroWindow x:Class="OsuModeManager.GamemodeEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Closing="MetroWindow_Closing"
         Background="#242424"
-        Title="GamemodeViewer" Height="280" Width="450">
+        Title="Editor" Height="280" Width="450" ResizeMode="CanMinimize">
     <Grid Margin="10">
         <StackPanel Orientation="Vertical">
             <Grid Margin="5">
@@ -24,13 +24,13 @@
             </Grid>
             <Grid Margin="5,10,5,5">
                 <Label Content="Tag Version:" Width="150" HorizontalAlignment="Left"/>
-                <TextBox x:Name="TextBoxTagVersion" Margin="150,0,0,0" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="TextBoxTagVersion" Margin="150,0,0,0" HorizontalAlignment="Stretch" TextChanged="TextBox_InvalidateUpdateCheck"/>
             </Grid>
             <Grid Margin="5">
                 <Label Content="Ruleset Filename:" Width="150" HorizontalAlignment="Left"/>
-                <TextBox x:Name="TextBoxRulsesetFilename" Margin="150,0,0,0" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="TextBoxRulsesetFilename" Margin="150,0,0,0" HorizontalAlignment="Stretch"  TextChanged="TextBox_InvalidateUpdateCheck"/>
             </Grid>
-            <Rectangle Height="10"/>
+            <Rectangle Height="8"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button x:Name="GetLatestButton" Content="Get Latest" Width="200" Height="40" Click="GetLatestButton_Click"/>
                 <Rectangle Width="20"/>

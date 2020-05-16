@@ -13,7 +13,7 @@ namespace OsuModeManager.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -32,6 +32,53 @@ namespace OsuModeManager.Properties {
             }
             set {
                 this["OsuLazerInstallationPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GitHubUsername {
+            get {
+                return ((string)(this["GitHubUsername"]));
+            }
+            set {
+                this["GitHubUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GitHubPassword {
+            get {
+                return ((string)(this["GitHubPassword"]));
+            }
+            set {
+                this["GitHubPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LatestToken {
+            get {
+                return ((string)(this["LatestToken"]));
+            }
+            set {
+                this["LatestToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LatestTokenCreationTime {
+            get {
+                return ((global::System.DateTime)(this["LatestTokenCreationTime"]));
+            }
+            set {
+                this["LatestTokenCreationTime"] = value;
             }
         }
     }

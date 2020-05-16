@@ -59,5 +59,32 @@ namespace OsuModeManager.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Iv1.8016a5302aada495.
+        /// </summary>
+        internal static string ClientID {
+            get {
+                return ResourceManager.GetString("ClientID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ff461040687d1250046d9a713570d87835414ea0.
+        /// </summary>
+        internal static string ClientSecret {
+            get {
+                return ResourceManager.GetString("ClientSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3f:d4:f4:07:c2:72:69:02:3d:85:84:29:c3:e4:f0:b2:16:50:1c:4c.
+        /// </summary>
+        internal static string SecretKey {
+            get {
+                return ResourceManager.GetString("SecretKey", resourceCulture);
+            }
+        }
     }
 }

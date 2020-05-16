@@ -4,6 +4,8 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Security;
+using System.Threading;
+using System.Threading.Tasks;
 using Ookii.Dialogs.Wpf;
 
 namespace OsuModeManager {
@@ -104,7 +106,43 @@ namespace OsuModeManager {
             return null;
         }
 
+        public static FileInfo GetFile(string Title = "Pick a file", string Filter = "Any File (*.*)|*.*", DirectoryInfo InitialDirectory = null, FileInfo StartFile = null) {
+            VistaOpenFileDialog FileBrowser = new VistaOpenFileDialog {
+                ReadOnlyChecked = true,
+                ShowReadOnly = true,
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Filter = Filter,
+                FilterIndex = 0,
+                InitialDirectory = InitialDirectory?.FullName ?? Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                RestoreDirectory = true,
+                Title = Title
+            };
+
+            if (StartFile != null) {
+                FileBrowser.FileName = StartFile.FullName;
+            }
+
+            if (FileBrowser.ShowDialog() == true && TryGetFile(FileBrowser.FileName, out FileInfo Result)) {
+                return Result;
+            }
+
+            return null;
+        }
+
         public static int Clamp(this int Value, int Min = int.MinValue, int Max = int.MaxValue) => Value < Min ? Min : Value > Max ? Max : Value;
+
+        public static Task WaitForExitAsync(this Process Process,
+            CancellationToken CancellationToken = default) {
+            TaskCompletionSource<object> Tcs = new TaskCompletionSource<object>();
+            Process.EnableRaisingEvents = true;
+            Process.Exited += (Sender, Args) => Tcs.TrySetResult(null);
+            if (CancellationToken != default) {
+                CancellationToken.Register(Tcs.SetCanceled);
+            }
+
+            return Tcs.Task;
+        }
 
     }
 }
