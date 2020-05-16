@@ -77,14 +77,5 @@ namespace OsuModeManager.Properties {
                 return ResourceManager.GetString("ClientSecret", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 3f:d4:f4:07:c2:72:69:02:3d:85:84:29:c3:e4:f0:b2:16:50:1c:4c.
-        /// </summary>
-        internal static string SecretKey {
-            get {
-                return ResourceManager.GetString("SecretKey", resourceCulture);
-            }
-        }
     }
 }

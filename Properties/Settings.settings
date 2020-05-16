@@ -5,12 +5,6 @@
     <Setting Name="OsuLazerInstallationPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="GitHubUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="GitHubPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="LatestToken" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

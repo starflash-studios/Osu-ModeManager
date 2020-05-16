@@ -123,7 +123,4 @@
   <data name="ClientSecret" xml:space="preserve">
     <value>ff461040687d1250046d9a713570d87835414ea0</value>
   </data>
-  <data name="SecretKey" xml:space="preserve">
-    <value>3f:d4:f4:07:c2:72:69:02:3d:85:84:29:c3:e4:f0:b2:16:50:1c:4c</value>
-  </data>
 </root>

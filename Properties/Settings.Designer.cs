@@ -38,30 +38,6 @@ namespace OsuModeManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string GitHubUsername {
-            get {
-                return ((string)(this["GitHubUsername"]));
-            }
-            set {
-                this["GitHubUsername"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string GitHubPassword {
-            get {
-                return ((string)(this["GitHubPassword"]));
-            }
-            set {
-                this["GitHubPassword"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LatestToken {
             get {
                 return ((string)(this["LatestToken"]));
