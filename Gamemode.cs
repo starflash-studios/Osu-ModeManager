@@ -43,7 +43,7 @@ namespace OsuModeManager {
         public Gamemode(string GitHubUser = @"Altenhh", string GitHubRepo = "tau", string TagVersion = null, string RulesetFilename = "osu.Game.Rulesets.Tau.dll", UpdateStatus UpdateStatus = default) {
             this.GitHubUser = GitHubUser;
             this.GitHubRepo = GitHubRepo;
-            this.GitHubTagVersion = TagVersion;
+            GitHubTagVersion = TagVersion;
             this.RulesetFilename = RulesetFilename;
             this.UpdateStatus = UpdateStatus;
         }
@@ -75,19 +75,23 @@ namespace OsuModeManager {
         }
 
         public async Task<(UpdateStatus, Release)> CheckForUpdate(DirectoryInfo LazerInstallationPath) {
-            (bool LatestSucess, Release Latest) = await TryGetLatestReleaseAsync();
-            (bool CurrentSucess, Release Current) = await TryGetCurrentReleaseAsync();
+            (bool LatestSuccess, Release Latest) = await TryGetLatestReleaseAsync();
+            (bool CurrentSuccess, Release Current) = await TryGetCurrentReleaseAsync();
 
-            if (LatestSucess && CurrentSucess) {
-                if (Latest.TagName.Equals(Current.TagName, StringComparison.InvariantCultureIgnoreCase)) {
-                    UpdateStatus = UpdateStatus.UpToDate;
-                    if (LazerInstallationPath?.Exists == true) {
-                        if ($"{LazerInstallationPath.FullName}\\{RulesetFilename}".TryGetFile(out FileInfo GamemodeFile) && GamemodeFile?.Exists == true) {
-                            UpdateStatus = UpdateStatus.UpToDate;
-                        } else {
-                            UpdateStatus = UpdateStatus.FileMissing;
+            if (LatestSuccess) {
+                if (CurrentSuccess) {
+                    if (Latest.TagName.Equals(Current.TagName, StringComparison.InvariantCultureIgnoreCase)) {
+                        UpdateStatus = UpdateStatus.UpToDate;
+                        if (LazerInstallationPath?.Exists == true) {
+                            if (LazerInstallationPath.TryGetRelativeFile(RulesetFilename, out FileInfo GamemodeFile) && GamemodeFile.Exists()) {
+                                UpdateStatus = UpdateStatus.UpToDate;
+                            } else {
+                                UpdateStatus = UpdateStatus.FileMissing;
+                            }
+                            Debug.WriteLine("\tChecked if '" + GamemodeFile + "' exists... result? " + UpdateStatus);
                         }
-                        Debug.WriteLine("\tChecked if '" + GamemodeFile + "' exists... result? " + UpdateStatus);
+                    } else {
+                        UpdateStatus = UpdateStatus.UpdateRequired;
                     }
                 } else {
                     UpdateStatus = UpdateStatus.UpdateRequired;

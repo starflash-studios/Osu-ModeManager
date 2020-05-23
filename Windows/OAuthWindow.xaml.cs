@@ -32,10 +32,14 @@ namespace OsuModeManager {
             string Code = await OAuthCodeSource.Task;
             Debug.WriteLine("Get code: " + Code);
 
-            if (Code.IsNullOrEmpty()) { return string.Empty; }
+            if (Code.IsNullOrEmpty()) {
+                OAuthCodeSource = null;
+                return string.Empty;
+            }
 
             string OAuthToken = await GenerateTokenFromOAuth(Client, ClientID, ClientSecret, Code);
 
+            OAuthCodeSource = null;
             return OAuthToken;
         }
 
@@ -69,5 +73,7 @@ namespace OsuModeManager {
         }
 
         void Browser_Loaded(object Sender, System.Windows.RoutedEventArgs E) => Dispatcher.Invoke(() => Browser.Focus(), System.Windows.Threading.DispatcherPriority.Input);
+
+        void MetroWindow_Closing(object Sender, System.ComponentModel.CancelEventArgs E) => OAuthCodeSource?.TrySetResult(null);
     }
 }

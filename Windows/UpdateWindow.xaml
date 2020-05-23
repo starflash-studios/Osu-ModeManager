@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Name="UpdateWindowElement"
         Title="%%COUNT%% Updates Available" Height="450" Width="300" MinWidth="300" MaxWidth="300" MinHeight="450">
-    <Grid Margin="10">
+    <Grid x:Name="MainGrid" Margin="10">
         <StackPanel Orientation="Vertical">
             <ListBox x:Name="UpdateList" ItemsSource="{Binding DisplayGamemodes, ElementName=UpdateWindowElement}" Height="300" SelectionChanged="UpdateList_SelectionChanged" MouseDoubleClick="UpdateList_MouseDoubleClick">
                 <ListBox.ItemTemplate>
@@ -30,6 +30,16 @@
                     <Label x:Name="ConfirmGrammar" Content="updates available" HorizontalAlignment="Center" FontSize="16"/>
                     <Rectangle Height="16"/>
                     <Label Content="Click here to view updates." HorizontalAlignment="Center" FontSize="20"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+        <Button x:Name="CloseButton" Visibility="Collapsed" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" Click="CloseButton_Click">
+            <Button.Content>
+                <StackPanel Orientation="Vertical">
+                    <Label Content="0" HorizontalAlignment="Center" FontSize="24"/>
+                    <Label  Content="updates available" HorizontalAlignment="Center" FontSize="16"/>
+                    <Rectangle Height="16"/>
+                    <Label Content="╰(*°▽°*)╯" HorizontalAlignment="Center" FontSize="20"/>
                 </StackPanel>
             </Button.Content>
         </Button>

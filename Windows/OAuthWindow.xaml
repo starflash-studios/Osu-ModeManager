@@ -7,6 +7,7 @@
         xmlns:cfs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
+        Closing="MetroWindow_Closing"
         Background="#242424"
         Title="GitHub OAuth Sign-in" Height="600" Width="800" MinWidth="300" MinHeight="300">
     <Grid Margin="10">
