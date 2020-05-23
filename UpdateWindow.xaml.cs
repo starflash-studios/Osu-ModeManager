@@ -78,7 +78,7 @@ namespace OsuModeManager {
 
             int CallerIndex = MainWindow.Gamemodes.IndexOf(Gamemode);
             if (CallerIndex >= 0) {
-                MainWindow.Gamemodes[CallerIndex] = new Gamemode(Gamemode.GitHubUser, Gamemode.GitHubRepo, Release.TagName, Gamemode.RulesetFilename, false);
+                MainWindow.Gamemodes[CallerIndex] = new Gamemode(Gamemode.GitHubUser, Gamemode.GitHubRepo, Release.TagName, Gamemode.RulesetFilename, UpdateStatus.UpToDate);
             }
         }
 

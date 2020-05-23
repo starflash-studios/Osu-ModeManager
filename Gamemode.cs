@@ -1,32 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MahApps.Metro.IconPacks;
 using Octokit;
 
 namespace OsuModeManager {
-    public struct Gamemode : IEquatable<Gamemode> {
-        
+    public struct Gamemode : IEquatable<Gamemode>, ICloneable {
+
         public string GitHubUser;
         public string GitHubRepo;
         public string GitHubTagVersion;
         public string RulesetFilename;
 
-        public bool? UpdateRequired;
+        public UpdateStatus UpdateStatus;
 
-        public System.Windows.Visibility DisplayUpdate => UpdateRequired == true ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-        public System.Windows.Visibility DisplayUpToDate => UpdateRequired == false ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+        public System.Windows.Visibility DisplayAnyIcon => UpdateStatus == UpdateStatus.Unchecked ? System.Windows.Visibility.Hidden : System.Windows.Visibility.Visible;
+
+        public PackIconMaterialKind DisplayIconType {
+            get {
+                switch (UpdateStatus) {
+                    case UpdateStatus.Unchecked:
+                        return PackIconMaterialKind.HelpRhombusOutline;
+                    case UpdateStatus.UpToDate:
+                        return PackIconMaterialKind.CheckboxMarkedCircleOutline;
+                    case UpdateStatus.UpdateRequired:
+                        return PackIconMaterialKind.Update;
+                    case UpdateStatus.FileMissing:
+                        return PackIconMaterialKind.Download;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
         public string DisplayName => ToString();
 
-        public static Gamemode CreateInstance(string GitHubUser = @"Altenhh", string GitHubRepo = "tau", string TagVersion = null, string RulesetFilename = null, bool? UpdateRequired = null) => new Gamemode(GitHubUser, GitHubRepo, TagVersion, RulesetFilename, UpdateRequired);
+        public static Gamemode CreateInstance(string GitHubUser = @"Altenhh", string GitHubRepo = "tau", string TagVersion = null, string RulesetFilename = null, UpdateStatus UpdateStatus = default) => new Gamemode(GitHubUser, GitHubRepo, TagVersion, RulesetFilename, UpdateStatus);
 
-        public Gamemode(string GitHubUser = @"Altenhh", string GitHubRepo = "tau", string TagVersion = null, string RulesetFilename = "osu.Game.Rulesets.Tau.dll", bool? UpdateRequired = null) {
+        public Gamemode(string GitHubUser = @"Altenhh", string GitHubRepo = "tau", string TagVersion = null, string RulesetFilename = "osu.Game.Rulesets.Tau.dll", UpdateStatus UpdateStatus = default) {
             this.GitHubUser = GitHubUser;
             this.GitHubRepo = GitHubRepo;
             this.GitHubTagVersion = TagVersion;
             this.RulesetFilename = RulesetFilename;
-            this.UpdateRequired = UpdateRequired;
+            this.UpdateStatus = UpdateStatus;
         }
 
         #region GitHub
@@ -55,15 +74,29 @@ namespace OsuModeManager {
             return (false, null);
         }
 
-        public async Task<(bool?, Release)> CheckForUpdate() {
+        public async Task<(UpdateStatus, Release)> CheckForUpdate(DirectoryInfo LazerInstallationPath) {
             (bool LatestSucess, Release Latest) = await TryGetLatestReleaseAsync();
             (bool CurrentSucess, Release Current) = await TryGetCurrentReleaseAsync();
 
             if (LatestSucess && CurrentSucess) {
-                //Debug.WriteLine("Current: " + Current.TagName + " | Latest: " + Latest.TagName + " |== " + Current.TagName.Equals(Latest.TagName));
-                UpdateRequired = !Latest.TagName.Equals(Current.TagName, StringComparison.InvariantCultureIgnoreCase);
+                if (Latest.TagName.Equals(Current.TagName, StringComparison.InvariantCultureIgnoreCase)) {
+                    UpdateStatus = UpdateStatus.UpToDate;
+                    if (LazerInstallationPath?.Exists == true) {
+                        if ($"{LazerInstallationPath.FullName}\\{RulesetFilename}".TryGetFile(out FileInfo GamemodeFile) && GamemodeFile?.Exists == true) {
+                            UpdateStatus = UpdateStatus.UpToDate;
+                        } else {
+                            UpdateStatus = UpdateStatus.FileMissing;
+                        }
+                        Debug.WriteLine("\tChecked if '" + GamemodeFile + "' exists... result? " + UpdateStatus);
+                    }
+                } else {
+                    UpdateStatus = UpdateStatus.UpdateRequired;
+                }
+            } else {
+                UpdateStatus = UpdateStatus.Unchecked;
             }
-            return (UpdateRequired, Latest);
+            Debug.WriteLine("\t\tFinal Result: " + UpdateStatus);
+            return (UpdateStatus, Latest);
         }
 
         #endregion
@@ -125,10 +158,19 @@ namespace OsuModeManager {
             GitHubRepo == Other.GitHubRepo &&
             GitHubTagVersion == Other.GitHubTagVersion &&
             RulesetFilename == Other.RulesetFilename;
+        
+        public object Clone() => CreateInstance(GitHubUser, GitHubRepo, GitHubTagVersion, RulesetFilename, UpdateStatus);
 
         public static bool operator ==(Gamemode Left, Gamemode Right) => Left.Equals(Right);
 
         public static bool operator !=(Gamemode Left, Gamemode Right) => !(Left == Right);
         #endregion
+    }
+
+    public enum UpdateStatus {
+        Unchecked,
+        UpToDate,
+        UpdateRequired,
+        FileMissing
     }
 }

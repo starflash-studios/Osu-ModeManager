@@ -14,7 +14,7 @@ namespace OsuModeManager {
         }
 
         public static async Task<Gamemode> GetGamemodeEditor(Gamemode CurrentGamemode = default) {
-            Debug.WriteLine("Update required? " + CurrentGamemode.UpdateRequired);
+            Debug.WriteLine("Update Status: " + CurrentGamemode.UpdateStatus);
             GamemodeEditor Window = new GamemodeEditor();
             Window.Show();
             return await Window.GetGamemode(CurrentGamemode);
@@ -54,7 +54,7 @@ namespace OsuModeManager {
 
             if (User.IsNullOrEmpty() || Repo.IsNullOrEmpty() || Version.IsNullOrEmpty() || RulesetFile.IsNullOrEmpty()) { return; }
 
-            ResultantGamemode = new Gamemode(User, Repo, Version, RulesetFile, ResultantGamemode.UpdateRequired);
+            ResultantGamemode = new Gamemode(User, Repo, Version, RulesetFile, ResultantGamemode.UpdateStatus);
 
             Result?.TrySetResult(ResultantGamemode);
         }
@@ -90,7 +90,7 @@ namespace OsuModeManager {
                 Dispatcher.Invoke(() => TextBoxTagVersion.Text = Release.TagName, System.Windows.Threading.DispatcherPriority.Normal);
                 foreach (ReleaseAsset Asset in Release.Assets.Where(Asset => Asset.Name.ToLowerInvariant().EndsWith(".dll"))) {
                     Dispatcher.Invoke(() => TextBoxRulsesetFilename.Text = Asset.Name, System.Windows.Threading.DispatcherPriority.Normal);
-                    ResultantGamemode.UpdateRequired = false;
+                    ResultantGamemode.UpdateStatus = UpdateStatus.UpToDate;
                     break;
                 }
             }
@@ -98,6 +98,6 @@ namespace OsuModeManager {
 
         void MetroWindow_Closing(object Sender, System.ComponentModel.CancelEventArgs E) => Result?.TrySetResult(ResultantGamemode);
 
-        void TextBox_InvalidateUpdateCheck(object Sender, System.Windows.Controls.TextChangedEventArgs E) => ResultantGamemode.UpdateRequired = null;
+        void TextBox_InvalidateUpdateCheck(object Sender, System.Windows.Controls.TextChangedEventArgs E) => ResultantGamemode.UpdateStatus = UpdateStatus.Unchecked;
     }
 }

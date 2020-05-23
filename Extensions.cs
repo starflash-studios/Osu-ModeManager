@@ -130,6 +130,10 @@ namespace OsuModeManager {
             return null;
         }
 
+        public static bool CheckExists(this DirectoryInfo DirectoryInfo) => DirectoryInfo != null && DirectoryInfo.Exists;
+
+        public static bool CheckExists(this FileInfo FileInfo) => FileInfo != null && FileInfo.Exists;
+
         public static int Clamp(this int Value, int Min = int.MinValue, int Max = int.MaxValue) => Value < Min ? Min : Value > Max ? Max : Value;
 
         public static Task WaitForExitAsync(this Process Process,

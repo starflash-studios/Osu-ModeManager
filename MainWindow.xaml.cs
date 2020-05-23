@@ -30,9 +30,11 @@ namespace OsuModeManager {
             Client = new GitHubClient(new ProductHeaderValue("Osu!ModeManager", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion));
 
             //Create new OAuth token if none exists, or if the latest is older than 1 hour
-            if (Settings.Default.LatestToken.IsNullOrEmpty() || DateTime.UtcNow - Settings.Default.LatestTokenCreationTime > TimeSpan.FromHours(1)) {
+            if (Environment.GetCommandLineArgs().Contains("--flush") || Settings.Default.LatestToken.IsNullOrEmpty() || DateTime.UtcNow - Settings.Default.LatestTokenCreationTime > TimeSpan.FromHours(1)) {
+                Debug.WriteLine("New OAuth Token Required");
                 AuthoriseButton.Visibility = Visibility.Visible;
             } else {
+                Debug.WriteLine("Reusing OAuth Token");
                 Client.Credentials = new Credentials(Settings.Default.LatestToken);
             }
             //AuthoriseButton.Visibility = System.Windows.Visibility.Visible;
@@ -57,7 +59,7 @@ namespace OsuModeManager {
             Settings.Default.Save();
 
             LazerInstallationPath = NewInstallationPath;
-            
+
             LazerInstallations = new ObservableCollection<DirectoryInfo>();
             foreach (DirectoryInfo LazerInstallation in GetLazerVersions()) {
                 LazerInstallations.Add(LazerInstallation);
@@ -142,31 +144,31 @@ namespace OsuModeManager {
             Dictionary<Gamemode, Release> Updates = new Dictionary<Gamemode, Release>();
             for (int G = 0; G < Gamemodes.Count; G++) {
                 Gamemode Gamemode = Gamemodes[G];
-                //Debug.WriteLine("\tChecking: " + Gamemode);
-                (bool ? UpdateRequired, Release LatestRelease) = await Gamemode.CheckForUpdate();
-                //Debug.WriteLine("\t\tResult: " + UpdateRequired + "; " + LatestRelease.Name);
-                bool? ReflectedUpdate = null;
-                switch (UpdateRequired) {
-                    case true:
-                        Debug.WriteLine("Update required for " + Gamemode + " | Newest release: " + LatestRelease.TagName);
+                (UpdateStatus UpdateStatus, Release LatestRelease) = await Gamemode.CheckForUpdate(GetSelectedLazerInstall());
+
+                switch (UpdateStatus) {
+                    case UpdateStatus.Unchecked:
+                        Debug.WriteLine($"An error occurred when checking {Gamemode} ({Gamemode.GitHubRepo} by {Gamemode.GitHubUser})");
+                        break;
+                    case UpdateStatus.UpToDate:
+                        Debug.WriteLine(Gamemode + " is up to date.");
+                        break;
+                    case UpdateStatus.UpdateRequired:
+                    case UpdateStatus.FileMissing:
+                        Debug.WriteLine(Gamemode.UpdateStatus + " for " + Gamemode + " | Newest release: " + LatestRelease.TagName);
                         AnyUpdatesRequired = true;
-                        ReflectedUpdate = true;
 
                         Updates.Add(Gamemodes[G], LatestRelease);
                         break;
-                    case false:
-                        Debug.WriteLine(Gamemode + " is up to date.");
-                        ReflectedUpdate = false;
-                        break;
-                    case null:
-                        Debug.WriteLine($"An error occurred when checking {Gamemode} ({Gamemode.GitHubRepo} by {Gamemode.GitHubUser})");
-
-                        ReflectedUpdate = null;
-                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
 
+                Gamemode GamemodeClone = (Gamemode)Gamemode.Clone();
+                GamemodeClone.UpdateStatus = UpdateStatus;
+
                 Gamemodes.RemoveAt(G);
-                Gamemodes.Insert(G, new Gamemode(Gamemode.GitHubUser, Gamemode.GitHubRepo, Gamemode.GitHubTagVersion, Gamemode.RulesetFilename, ReflectedUpdate));
+                Gamemodes.Insert(G, GamemodeClone);
             }
 
             if (AnyUpdatesRequired) {
@@ -205,6 +207,17 @@ namespace OsuModeManager {
             Dispatcher.Invoke(() => { //Called on OAuth Failure
                 AuthoriseButton.IsEnabled = true;
             }, DispatcherPriority.Normal);
+        }
+
+        void GamemodeFolderOpen_Click(object Sender, RoutedEventArgs E) {
+            DirectoryInfo SelectedFolder = GetSelectedLazerInstall();
+            if (SelectedFolder != null) {
+                Debug.WriteLine("Opening explorer.exe to default gamemode path: " + $"/select,\"{SelectedFolder.FullName}\\osu.Game.Rulesets.Osu.dll\"");
+                Process.Start("explorer.exe", $"/select,\"{SelectedFolder.FullName}\\osu.Game.Rulesets.Osu.dll\"");
+            } else {
+                Debug.WriteLine("Opening explorer.exe to osu!lazer root: " + $"\"{LazerInstallationPath.FullName}\"");
+                Process.Start("explorer.exe", $"\"{LazerInstallationPath.FullName}\"");
+            }
         }
 
         #region Saving / Loading

@@ -30,14 +30,19 @@
                     <DataTemplate DataType="local:Gamemode">
                         <Grid HorizontalAlignment="Stretch">
                             <Label x:Name="Label" Content="{Binding DisplayName}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,30,0"/>
-                            <iconPacks:PackIconMaterial x:Name="UpdateIcon" Kind="Update" Visibility="{Binding DisplayUpdate}" Width="20" Height="20" Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White"/>
-                            <iconPacks:PackIconMaterial x:Name="UpToDateIcon" Kind="CheckboxMarkedCircleOutline" Visibility="{Binding DisplayUpToDate}" Width="20" Height="20" Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White"/>
+                            <iconPacks:PackIconMaterial x:Name="UpdateIcon" Kind="{Binding DisplayIconType}" Visibility="{Binding DisplayAnyIcon}" Width="20" Height="20" Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
             <Separator Margin="4"/>
             <StackPanel Orientation="Horizontal" Height="32" HorizontalAlignment="Center">
+                <Button Click="GamemodeFolderOpen_Click">
+                    <Button.Content>
+                        <iconPacks:PackIconMaterial Kind="FolderOpen"/>
+                    </Button.Content>
+                </Button>
+                <Rectangle Width="8"/>
                 <Button x:Name="GamemodeListImport" Click="GamemodeListImport_Click">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
