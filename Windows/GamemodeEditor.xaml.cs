@@ -59,7 +59,7 @@ namespace OsuModeManager {
             Result?.TrySetResult(ResultantGamemode);
         }
 
-        const string GitHubURLDecoder = @"http(s)?:\/\/github.com?(.*?)\/(?<GitHubUser>.+?)\/(?<GitHubRepo>.+?)\/";
+        const string GitHubURLDecoder = @"http(s)?:\/\/github.com?(.*?)\/(?<GitHubUser>.*[0-9a-zA-Z])\/(?<GitHubRepo>.*[0-9a-zA-Z])";
         
         const string GitHubURLEncoder = @"https://github.com/%GitHubUser%/%GitHubRepo%/";
 
