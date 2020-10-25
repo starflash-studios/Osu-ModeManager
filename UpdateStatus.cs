@@ -6,4 +6,11 @@
 // More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
 #endregion
 
-namespace OsuModeManager { public partial class App { } }
+namespace OsuModeManager {
+    public enum UpdateStatus {
+        Unchecked,
+        UpToDate,
+        UpdateRequired,
+        FileMissing
+    }
+}

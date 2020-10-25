@@ -1,20 +1,30 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2020  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 using Ookii.Dialogs.Wpf;
-
 using Shell32;
 using Syroot.Windows.IO;
 
-namespace OsuModeManager {
-    public static class FileExtensions {
+#endregion
 
+namespace OsuModeManager.Extensions {
+    public static class FileExtensions {
+        
         #region Assembly Reflection        
         /// <summary> Returns the location of the ExecutingAssembly parsed as a <see cref="FileInfo"/>. See also: <seealso cref="Assembly.GetExecutingAssembly"/>. </summary>
         public static FileInfo GetExecutable() => new FileInfo(Assembly.GetExecutingAssembly().Location);
@@ -297,11 +307,11 @@ namespace OsuModeManager {
         #region FileInfo Reading
         public static string[] ReadAllLines(this FileInfo FileInfo) => File.ReadAllLines(FileInfo.FullName);
         
-        public static string[] ReadAllLines(this FileInfo FileInfo, System.Text.Encoding Encoding) => File.ReadAllLines(FileInfo.FullName, Encoding);
+        public static string[] ReadAllLines(this FileInfo FileInfo, Encoding Encoding) => File.ReadAllLines(FileInfo.FullName, Encoding);
 
         public static string ReadAllText(this FileInfo FileInfo) => File.ReadAllText(FileInfo.FullName);
 
-        public static string ReadAllText(this FileInfo FileInfo, System.Text.Encoding Encoding) => File.ReadAllText(FileInfo.FullName, Encoding);
+        public static string ReadAllText(this FileInfo FileInfo, Encoding Encoding) => File.ReadAllText(FileInfo.FullName, Encoding);
 
         public static byte[] ReadAllBytes(this FileInfo FileInfo) => File.ReadAllBytes(FileInfo.FullName);
         #endregion

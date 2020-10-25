@@ -1,22 +1,22 @@
-﻿<mah:MetroWindow x:Class="OsuModeManager.ReleaseWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        mc:Ignorable="d"
-        Background="#242424"
-        SizeToContent="Height"
-        Title="Release" Height="400" MinHeight="200" MaxHeight="600" Width="400">
+﻿<mah:MetroWindow x:Class="OsuModeManager.Windows.ReleaseWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 mc:Ignorable="d"
+                 Background="#242424"
+                 SizeToContent="Height"
+                 Title="Release" Height="400" MinHeight="200" MaxHeight="600" Width="400">
     <Grid Margin="10">
         <GroupBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <GroupBox.Header>
                 <Grid>
-                    <Label x:Name="ReleaseName" Content="Release Name" HorizontalAlignment="Left"/>
+                    <Label x:Name="ReleaseName" Content="Release Name" HorizontalAlignment="Left" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <iconPacks:PackIconMaterial Kind="Tag" VerticalAlignment="Center"/>
-                        <Label x:Name="ReleaseTag" Content="Tag Name" VerticalAlignment="Center"/>
+                        <iconPacks:PackIconMaterial Kind="Tag" VerticalAlignment="Center" />
+                        <Label x:Name="ReleaseTag" Content="Tag Name" VerticalAlignment="Center" />
                     </StackPanel>
                 </Grid>
             </GroupBox.Header>
@@ -28,7 +28,7 @@
                     </ScrollViewer>
                 </DockPanel>
             </ScrollViewer>-->
-            <RichTextBox x:Name="ReleaseChangelog"/>
+            <RichTextBox x:Name="ReleaseChangelog" />
         </GroupBox>
     </Grid>
 </mah:MetroWindow>

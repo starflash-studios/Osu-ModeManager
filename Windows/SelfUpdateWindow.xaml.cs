@@ -1,17 +1,29 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2020  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Windows.Threading;
 using Octokit;
-
+using OsuModeManager.Extensions;
 using Syroot.Windows.IO;
 
-namespace OsuModeManager {
+#endregion
+
+namespace OsuModeManager.Windows {
     public partial class SelfUpdateWindow {
         public static DirectoryInfo Downloads = KnownFolderType.DownloadsLocalized.GetDirectoryInfo();
         public const string GitHubCreator = "starflash-studios";
@@ -69,7 +81,7 @@ namespace OsuModeManager {
                     Dispatcher.Invoke(() => {
                         DownloadButton.IsEnabled = false;
                         DownloadButton.Visibility = Visibility.Collapsed;
-                    }, System.Windows.Threading.DispatcherPriority.Normal);
+                    }, DispatcherPriority.Normal);
 
                     WebClient Client = new WebClient();
                     Client.DownloadProgressChanged += Client_DownloadProgressChanged;
@@ -100,7 +112,7 @@ namespace OsuModeManager {
 
         void MetroWindow_Closing(object Sender, CancelEventArgs E) => _Caller?.Show();
 
-        static readonly string[] SizeSuffixes =
+        static readonly string[] _SizeSuffixes =
             { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
         static string SizeSuffix(long Value) {
@@ -115,7 +127,7 @@ namespace OsuModeManager {
                 AdjustedSize /= 1024;
             }
 
-            return $"{AdjustedSize:N2} {SizeSuffixes[Mag]}";
+            return $"{AdjustedSize:N2} {_SizeSuffixes[Mag]}";
         }
     }
 }

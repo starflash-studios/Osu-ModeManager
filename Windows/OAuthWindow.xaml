@@ -1,23 +1,26 @@
-﻿<mah:MetroWindow x:Class="OsuModeManager.OAuthWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:cfs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        mc:Ignorable="d"
-        Closing="MetroWindow_Closing"
-        Background="#242424"
-        Title="GitHub OAuth Sign-in" Height="600" Width="800" MinWidth="300" MinHeight="300">
+﻿<mah:MetroWindow x:Class="OsuModeManager.Windows.OAuthWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:cfs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 mc:Ignorable="d"
+                 Closing="MetroWindow_Closing"
+                 Background="#242424"
+                 Title="GitHub OAuth Sign-in" Height="600" Width="800" MinWidth="300" MinHeight="300">
     <Grid Margin="10">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label Content="Please wait" HorizontalAlignment="Center" HorizontalContentAlignment="Center" FontSize="24"/>
-            <Rectangle Height="32"/>
-            <iconPacks:PackIconMaterial Kind="TimerSand" HorizontalAlignment="Center" VerticalAlignment="Center" Width="64" Height="64" Foreground="White"/>
-            <Rectangle Height="32"/>
-            <Label Content="Loading Sign-in page..." HorizontalAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"/>
+            <Label Content="Please wait" HorizontalAlignment="Center" HorizontalContentAlignment="Center" FontSize="24" />
+            <Rectangle Height="32" />
+            <iconPacks:PackIconMaterial Kind="TimerSand" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Width="64" Height="64" Foreground="White" />
+            <Rectangle Height="32" />
+            <Label Content="Loading Sign-in page..." HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                   FontSize="20" />
         </StackPanel>
-        <cfs:ChromiumWebBrowser x:Name="Browser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LoadingStateChanged="Browser_LoadingStateChanged" Loaded="Browser_Loaded"/>
+        <cfs:ChromiumWebBrowser x:Name="Browser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                LoadingStateChanged="Browser_LoadingStateChanged" Loaded="Browser_Loaded" />
     </Grid>
 </mah:MetroWindow>

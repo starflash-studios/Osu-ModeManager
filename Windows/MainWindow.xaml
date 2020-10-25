@@ -1,89 +1,119 @@
-﻿<mah:MetroWindow x:Class="OsuModeManager.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:local="clr-namespace:OsuModeManager"
-        xmlns:io="clr-namespace:System.IO;assembly=mscorlib"
-        Name="MainWindowElement"
-        mc:Ignorable="d"
-        Background="#242424"
-        Closing="MainWindowElement_Closing"
-        Title="Osu!ModeManager" Height="450" Width="300" MinWidth="300" MaxWidth="300" MinHeight="450">
-    <Grid x:Name="MainGrid" Margin="10">
-        <StackPanel Orientation="Vertical">
-            <Grid Height="34" VerticalAlignment="Top">
-                <Label Content="osu!lazer Version: " VerticalAlignment="Center" HorizontalAlignment="Left" Width="110"/>
-                <ComboBox x:Name="LazerVersionCombo" ItemsSource="{Binding LazerInstallations, ElementName=MainWindowElement}" Height="32" Margin="110,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="io:DirectoryInfo">
-                            <Label Content="{Binding Name}" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-            </Grid>
-            <Separator Margin="4"/>
-            <ListBox x:Name="GamemodeList" ItemsSource="{Binding Gamemodes, ElementName=MainWindowElement}" Height="265" HorizontalAlignment="Stretch" MouseDoubleClick="GamemodeList_MouseDoubleClick">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="local:Gamemode">
-                        <Grid HorizontalAlignment="Stretch">
-                            <Label x:Name="Label" Content="{Binding DisplayName}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,30,0"/>
-                            <iconPacks:PackIconMaterial x:Name="UpdateIcon" Kind="{Binding DisplayIconType}" Visibility="{Binding DisplayAnyIcon}" Width="20" Height="20" Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White"/>
-                        </Grid>
+﻿<mah:MetroWindow x:Class="OsuModeManager.Windows.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:local="clr-namespace:OsuModeManager"
+                 xmlns:io="clr-namespace:System.IO;assembly=mscorlib"
+                 Name="MainWindowElement"
+                 mc:Ignorable="d"
+                 Background="#242424"
+                 Closing="MainWindowElement_Closing"
+                 MinWidth="400" Width="400"
+                 MinHeight="500" Height="500"
+                 Title="Osu!ModeManager">
+    <SelectiveScrollingGrid x:Name="MainGrid" Margin="10">
+        <SelectiveScrollingGrid.RowDefinitions>
+            <RowDefinition MinHeight="34" Height="34" MaxHeight="34" />
+            <RowDefinition />
+            <RowDefinition MinHeight="80" Height="80" MaxHeight="80" />
+        </SelectiveScrollingGrid.RowDefinitions>
+        <SelectiveScrollingGrid Grid.Row="0">
+            <SelectiveScrollingGrid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="130" Width="130" MaxWidth="130" />
+                <ColumnDefinition />
+            </SelectiveScrollingGrid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="osu!lazer Version: " VerticalContentAlignment="Center" />
+            <ComboBox Grid.Column="1" x:Name="LazerVersionCombo"
+                      ItemsSource="{Binding LazerInstallations, ElementName=MainWindowElement}" Height="32"
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="io:DirectoryInfo">
+                        <Label Content="{Binding Name}" Padding="0" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Separator Margin="4"/>
-            <StackPanel Orientation="Horizontal" Height="32" HorizontalAlignment="Center">
-                <Button Click="GamemodeFolderOpen_Click">
-                    <Button.Content>
-                        <iconPacks:PackIconMaterial Kind="FolderOpen"/>
-                    </Button.Content>
-                </Button>
-                <Rectangle Width="8"/>
-                <Button x:Name="GamemodeListImport" Click="GamemodeListImport_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="ApplicationImport"/>
-                            <Label Content="Import" Padding="4,0,4,0" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-                <Rectangle Width="8"/>
-                <Button x:Name="GamemodeListAdd" Width="36" Click="GamemodeListAdd_Click">
-                    <Button.Content>
-                        <iconPacks:PackIconMaterial Kind="PlaylistPlus" />
-                    </Button.Content>
-                </Button>
-                <Rectangle Width="8"/>
-                <Button x:Name="GamemodeListRemove" Width="36" Click="GamemodeListRemove_Click">
-                    <Button.Content>
-                        <iconPacks:PackIconMaterial Kind="PlaylistRemove" />
-                    </Button.Content>
-                </Button>
-                <Rectangle Width="8"/>
-                <Button x:Name="GamemodeListSave" Click="GamemodeListSave_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="ContentSave"/>
-                            <Label Content="Save" Padding="4,0,4,0" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-            </StackPanel>
-            <Separator Margin="4"/>
-            <Button x:Name="UpdateCheckButton" Content="Check for updates" Height="40" Click="UpdateCheckButton_Click"/>
-        </StackPanel>
-        <Button x:Name="AuthoriseButton" Click="AuthoriseButton_Click" Visibility="Collapsed">
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </SelectiveScrollingGrid>
+        <ListBox x:Name="GamemodeList" ItemsSource="{Binding Gamemodes, ElementName=MainWindowElement}"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"
+                 MouseDoubleClick="GamemodeList_MouseDoubleClick">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="local:Gamemode">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial x:Name="UpdateIcon" Kind="{Binding DisplayIconType}"
+                                                    Visibility="{Binding DisplayAnyIcon}" Width="20" Height="20"
+                                                    Margin="0,0,5,0"
+                                                    Foreground="White" />
+                        <Label x:Name="Label" Content="{Binding DisplayName}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" Padding="0" Margin="2" Click="GamemodeFolderOpen_Click">
+                <Button.Content>
+                    <iconPacks:PackIconMaterial Kind="FolderOpen" />
+                </Button.Content>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="1" Padding="0" Margin="2" x:Name="GamemodeListImport"
+                    Click="GamemodeListImport_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="ApplicationImport" />
+                        <Label Content="Import" Padding="4,0,4,0" VerticalAlignment="Center"
+                               VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="2" Padding="0" Margin="2" x:Name="GamemodeListAdd"
+                    Click="GamemodeListAdd_Click">
+                <Button.Content>
+                    <iconPacks:PackIconMaterial Kind="PlaylistPlus" />
+                </Button.Content>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="3" Padding="0" Margin="2" x:Name="GamemodeListRemove"
+                    Click="GamemodeListRemove_Click">
+                <Button.Content>
+                    <iconPacks:PackIconMaterial Kind="PlaylistRemove" />
+                </Button.Content>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="4" Padding="0" Margin="2" x:Name="GamemodeListSave"
+                    Click="GamemodeListSave_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="ContentSave" />
+                        <Label Content="Save" Padding="4,0,4,0" VerticalAlignment="Center"
+                               VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="UpdateCheckButton"
+                    Content="Check for updates" Click="UpdateCheckButton_Click" />
+        </Grid>
+        <Button Grid.Row="0" Grid.RowSpan="3" x:Name="AuthoriseButton" Click="AuthoriseButton_Click"
+                Visibility="Collapsed">
             <Button.Content>
                 <StackPanel Orientation="Vertical">
-                    <Label Content="Sign in with GitHub" FontSize="16"/>
-                    <Rectangle Height="16"/>
-                    <iconPacks:PackIconMaterial Kind="Github" HorizontalAlignment="Center" Width="40" Height="40"/>
+                    <Label Content="Sign in with GitHub" FontSize="16" />
+                    <Rectangle Height="16" />
+                    <iconPacks:PackIconMaterial Kind="Github" HorizontalAlignment="Center" Width="40" Height="40" />
                 </StackPanel>
             </Button.Content>
         </Button>
-    </Grid>
+    </SelectiveScrollingGrid>
 </mah:MetroWindow>

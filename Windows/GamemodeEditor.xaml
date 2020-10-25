@@ -1,41 +1,66 @@
-﻿<mah:MetroWindow x:Class="OsuModeManager.GamemodeEditor"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        mc:Ignorable="d"
-        Closing="MetroWindow_Closing"
-        Background="#242424"
-        Title="Editor" Height="280" Width="450" ResizeMode="CanMinimize">
+﻿<mah:MetroWindow x:Class="OsuModeManager.Windows.GamemodeEditor"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 mc:Ignorable="d"
+                 Closing="MetroWindow_Closing"
+                 Background="#242424"
+                 MinHeight="280" Height="280"
+                 MinWidth="500" Width="500"
+                 Title="Editor">
     <Grid Margin="10">
-        <StackPanel Orientation="Vertical">
-            <Grid Margin="5">
-                <Label Content="GitHub URL:" Width="150" HorizontalAlignment="Left"/>
-                <TextBox x:Name="TextBoxGitHubURL" Margin="150,0,0,0" HorizontalAlignment="Stretch" TextChanged="TextBoxGitHubURL_TextChanged"/>
-            </Grid>
-            <Grid IsEnabled="False" Margin="30,2,5,5">
-                <Label Content="GitHub User:" Width="150" HorizontalAlignment="Left"/>
-                <TextBox x:Name="TextBoxGitHubUser" Margin="150,0,0,0" HorizontalAlignment="Stretch"/>
-            </Grid>
-            <Grid IsEnabled="False" Margin="30,2,5,5">
-                <Label Content="GitHub Repo:" Width="150" HorizontalAlignment="Left"/>
-                <TextBox x:Name="TextBoxGitHubRepo" Margin="150,0,0,0" HorizontalAlignment="Stretch"/>
-            </Grid>
-            <Grid Margin="5,10,5,5">
-                <Label Content="Tag Version:" Width="150" HorizontalAlignment="Left"/>
-                <TextBox x:Name="TextBoxTagVersion" Margin="150,0,0,0" HorizontalAlignment="Stretch" TextChanged="TextBox_InvalidateUpdateCheck"/>
-            </Grid>
-            <Grid Margin="5">
-                <Label Content="Ruleset Filename:" Width="150" HorizontalAlignment="Left"/>
-                <TextBox x:Name="TextBoxRulsesetFilename" Margin="150,0,0,0" HorizontalAlignment="Stretch"  TextChanged="TextBox_InvalidateUpdateCheck"/>
-            </Grid>
-            <Rectangle Height="8"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="GetLatestButton" Content="Get Latest" Width="200" Height="40" Click="GetLatestButton_Click"/>
-                <Rectangle Width="20"/>
-                <Button Content="Save" Width="200" Height="40" Click="SaveButton_Click"/>
+        <SelectiveScrollingGrid>
+            <SelectiveScrollingGrid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition MinWidth="150" Width="150" MaxWidth="150" />
+            </SelectiveScrollingGrid.ColumnDefinitions>
+            <SelectiveScrollingGrid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition MinHeight="50" Height="50" MaxHeight="50" />
+            </SelectiveScrollingGrid.RowDefinitions>
+            <StackPanel Orientation="Vertical" Grid.Column="0" Margin="0,0,3,0">
+                <SelectiveScrollingGrid>
+                    <SelectiveScrollingGrid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="150" Width="150" />
+                        <ColumnDefinition />
+                    </SelectiveScrollingGrid.ColumnDefinitions>
+                    <SelectiveScrollingGrid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </SelectiveScrollingGrid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="GitHub URL:" Margin="2" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="GitHub User:" IsEnabled="False" Margin="15,2,2,2" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="GitHub Repo:" IsEnabled="False" Margin="15,2,2,2" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="Tag Version:" Margin="2" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="Ruleset Filename:" Margin="2" />
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="TextBoxGitHubURL"
+                             TextChanged="TextBoxGitHubURL_TextChanged" Margin="2" />
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextBoxGitHubUser" IsEnabled="False"
+                             Margin="15,2,2,2" />
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="TextBoxGitHubRepo" IsEnabled="False"
+                             Margin="15,2,2,2" />
+                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="TextBoxTagVersion"
+                             TextChanged="TextBox_InvalidateUpdateCheck" Margin="2" />
+                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="TextBoxRulsesetFilename"
+                             TextChanged="TextBox_InvalidateUpdateCheck" Margin="2" />
+                </SelectiveScrollingGrid>
             </StackPanel>
-        </StackPanel>
+            <GridSplitter Grid.Row="0" Grid.Column="1" Width="3" HorizontalAlignment="Center"
+                          VerticalAlignment="Stretch" />
+            <ListView Grid.Row="0" Grid.Column="2" x:Name="KnownModes" SelectionChanged="KnownModes_SelectionChanged" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3"
+                        Grid.Row="1">
+                <Button x:Name="GetLatestButton" Content="Get Latest" Width="200" Height="40"
+                        Click="GetLatestButton_Click" />
+                <Rectangle Width="20" />
+                <Button Content="Save" Width="200" Height="40" Click="SaveButton_Click" />
+            </StackPanel>
+        </SelectiveScrollingGrid>
     </Grid>
 </mah:MetroWindow>
