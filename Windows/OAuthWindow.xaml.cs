@@ -1,10 +1,27 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2020  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using CefSharp;
 using Octokit;
+using OsuModeManager.Extensions;
 
-namespace OsuModeManager {
+#endregion
+
+namespace OsuModeManager.Windows {
     public partial class OAuthWindow {
         public static TaskCompletionSource<string> OAuthCodeSource;
 
@@ -25,6 +42,7 @@ namespace OsuModeManager {
             };
 
             Uri OAuthLoginUrl = Client.Oauth.GetGitHubLoginUrl(Request);
+            Debug.WriteLine($"Logging into: {OAuthLoginUrl.AbsoluteUri}");
             Browser.Address = OAuthLoginUrl.AbsoluteUri;
             //Browser.Navigate(OAuthLoginUrl);
 
@@ -52,7 +70,7 @@ namespace OsuModeManager {
 
         //https://github.com/starflash-studios/Osu-ModeManager?code=67d7e5fa77a80370145f
         public const string OAuthCodeDecoder = @"(.+?)\?code=(?<OAuthCode>.+?)(?:\?.*?|$)";
-        void Browser_LoadingStateChanged(object Sender, CefSharp.LoadingStateChangedEventArgs E) {
+        void Browser_LoadingStateChanged(object Sender, LoadingStateChangedEventArgs E) {
             if (OAuthCodeSource == null) { return; }
             string CurrentAddress = E.Browser.FocusedFrame.Url;
 
@@ -69,11 +87,11 @@ namespace OsuModeManager {
                 if (!BrowserTitle.IsNullOrEmpty()) {
                     Title = BrowserTitle;
                 }
-            }, System.Windows.Threading.DispatcherPriority.Normal);
+            }, DispatcherPriority.Normal);
         }
 
-        void Browser_Loaded(object Sender, System.Windows.RoutedEventArgs E) => Dispatcher.Invoke(() => Browser.Focus(), System.Windows.Threading.DispatcherPriority.Input);
+        void Browser_Loaded(object Sender, RoutedEventArgs E) => Dispatcher.Invoke(() => Browser.Focus(), DispatcherPriority.Input);
 
-        void MetroWindow_Closing(object Sender, System.ComponentModel.CancelEventArgs E) => OAuthCodeSource?.TrySetResult(null);
+        void MetroWindow_Closing(object Sender, CancelEventArgs E) => OAuthCodeSource?.TrySetResult(null);
     }
 }

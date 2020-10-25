@@ -1,19 +1,32 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2020  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
-
 using Octokit;
-
+using OsuModeManager.Extensions;
 using OsuModeManager.Properties;
 
-namespace OsuModeManager {
+#endregion
+
+namespace OsuModeManager.Windows {
     public partial class MainWindow {
         public static DirectoryInfo LazerInstallationPath;
         public static GitHubClient Client;
@@ -108,7 +121,7 @@ namespace OsuModeManager {
             }, DispatcherPriority.Normal);
         }
 
-        async void GamemodeList_MouseDoubleClick(object Sender, System.Windows.Input.MouseButtonEventArgs E) {
+        async void GamemodeList_MouseDoubleClick(object Sender, MouseButtonEventArgs E) {
             int SelectedIndex = GamemodeList.SelectedIndex;
             if (SelectedIndex >= 0) {
                 Gamemode NewGamemode = await GamemodeEditor.GetGamemodeEditor(Gamemodes[SelectedIndex]);
@@ -164,7 +177,9 @@ namespace OsuModeManager {
                     case UpdateStatus.FileMissing:
                         Debug.WriteLine(Gamemode.UpdateStatus + " for " + Gamemode + " | Newest release: " + LatestRelease.TagName);
 
-                        Updates.Add(Gamemodes[G], LatestRelease);
+                        if (!Updates.ContainsKey(Gamemodes[G])) {
+                            Updates.Add(Gamemodes[G], LatestRelease);
+                        }
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -175,7 +190,9 @@ namespace OsuModeManager {
 
             UpdateWindow UpdateWindow = new UpdateWindow(this, Updates);
             UpdateWindow.Show();
+#pragma warning disable IDE1006 // Naming Styles
             UpdateWindow.Closing += (_, __) => Dispatcher.Invoke(() => MainGrid.IsEnabled = true, DispatcherPriority.Normal);
+#pragma warning restore IDE1006 // Naming Styles
             MainGrid.IsEnabled = false;
 
             SaveGamemodes();
@@ -251,7 +268,7 @@ namespace OsuModeManager {
             Debug.WriteLine("Saving...");
         }
 
-        void MainWindowElement_Closing(object Sender, System.ComponentModel.CancelEventArgs E) {
+        void MainWindowElement_Closing(object Sender, CancelEventArgs E) {
             if (!Gamemodes.SequenceEqual(LoadedGamemodes)) {
                 // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                 switch (MessageBox.Show("Unsaved changes. Would you like to save now?", Title + "・Unsaved Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning)) {

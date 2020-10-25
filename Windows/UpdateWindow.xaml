@@ -1,47 +1,58 @@
-﻿<mah:MetroWindow x:Class="OsuModeManager.UpdateWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:local="clr-namespace:OsuModeManager"
-        Background="#242424"
-        mc:Ignorable="d"
-        Name="UpdateWindowElement"
-        Title="%%COUNT%% Updates Available" Height="450" Width="300" MinWidth="300" MaxWidth="300" MinHeight="450">
-    <Grid x:Name="MainGrid" Margin="10">
-        <StackPanel Orientation="Vertical">
-            <ListBox x:Name="UpdateList" ItemsSource="{Binding DisplayGamemodes, ElementName=UpdateWindowElement}" Height="300" SelectionChanged="UpdateList_SelectionChanged" MouseDoubleClick="UpdateList_MouseDoubleClick">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="local:Gamemode">
-                        <Label Content="{Binding DisplayName}" HorizontalAlignment="Stretch"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Separator Margin="4"/>
-            <Button x:Name="UpdateSingleButton" Content="Update" Height="40" Click="UpdateSingleButton_Click"/>
-            <Separator Margin="4"/>
-            <Button Content="Update All" Height="40" Click="UpdateAllButton_Click"/>
-        </StackPanel>
-        <Button x:Name="ConfirmButton" Visibility="Collapsed" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" Click="ConfirmButton_Click">
-            <Button.Content>
-                <StackPanel Orientation="Vertical">
-                    <Label x:Name="ConfirmCount" Content="[x]" HorizontalAlignment="Center" FontSize="24"/>
-                    <Label x:Name="ConfirmGrammar" Content="updates available" HorizontalAlignment="Center" FontSize="16"/>
-                    <Rectangle Height="16"/>
-                    <Label Content="Click here to view updates." HorizontalAlignment="Center" FontSize="20"/>
-                </StackPanel>
-            </Button.Content>
-        </Button>
-        <Button x:Name="CloseButton" Visibility="Collapsed" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" Click="CloseButton_Click">
-            <Button.Content>
-                <StackPanel Orientation="Vertical">
-                    <Label Content="0" HorizontalAlignment="Center" FontSize="24"/>
-                    <Label  Content="updates available" HorizontalAlignment="Center" FontSize="16"/>
-                    <Rectangle Height="16"/>
-                    <Label Content="╰(*°▽°*)╯" HorizontalAlignment="Center" FontSize="20"/>
-                </StackPanel>
-            </Button.Content>
-        </Button>
-    </Grid>
+﻿<mah:MetroWindow x:Class="OsuModeManager.Windows.UpdateWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:local="clr-namespace:OsuModeManager"
+                 Background="#242424"
+                 mc:Ignorable="d"
+                 Name="UpdateWindowElement"
+                 MinHeight="450" Height="450"
+                 MinWidth="300" Width="300"
+                 Title="%%COUNT%% Updates Available">
+    <SelectiveScrollingGrid x:Name="MainGrid" Margin="10">
+        <SelectiveScrollingGrid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition MinHeight="40" Height="40" MaxHeight="40" />
+            <RowDefinition MinHeight="40" Height="40" MaxHeight="40" />
+        </SelectiveScrollingGrid.RowDefinitions>
+        <ListBox Grid.Row="0" x:Name="UpdateList"
+                 ItemsSource="{Binding DisplayGamemodes, ElementName=UpdateWindowElement}"
+                 SelectionChanged="UpdateList_SelectionChanged"
+                 MouseDoubleClick="UpdateList_MouseDoubleClick">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="local:Gamemode">
+                    <Label Content="{Binding DisplayName}" HorizontalAlignment="Stretch" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Grid.Row="1" x:Name="UpdateSingleButton" Content="Update" Margin="2" Click="UpdateSingleButton_Click" />
+        <Button Grid.Row="2" Content="Update All" Margin="2" Click="UpdateAllButton_Click" />
+        <Grid Grid.Row="0" Grid.RowSpan="3">
+            <Button x:Name="ConfirmButton" Visibility="Collapsed" HorizontalContentAlignment="Center"
+                    Click="ConfirmButton_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Vertical">
+                        <Label x:Name="ConfirmCount" Content="[x]" HorizontalAlignment="Center" FontSize="24" />
+                        <Label x:Name="ConfirmGrammar" Content="updates available" HorizontalAlignment="Center"
+                               FontSize="16" />
+                        <Rectangle Height="16" />
+                        <Label Content="Click here to view updates." HorizontalAlignment="Center" FontSize="20" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button x:Name="CloseButton" Visibility="Collapsed" HorizontalContentAlignment="Center"
+                    Click="CloseButton_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="0" HorizontalAlignment="Center" FontSize="24" />
+                        <Label Content="updates available" HorizontalAlignment="Center" FontSize="16" />
+                        <Rectangle Height="16" />
+                        <Label Content="╰(*°▽°*)╯" HorizontalAlignment="Center" FontSize="20" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Grid>
+    </SelectiveScrollingGrid>
 </mah:MetroWindow>

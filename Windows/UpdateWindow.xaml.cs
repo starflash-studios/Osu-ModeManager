@@ -1,17 +1,31 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2020  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Input;
+using System.Windows.Threading;
 using Octokit;
+using OsuModeManager.Extensions;
 
-namespace OsuModeManager {
+#endregion
+
+namespace OsuModeManager.Windows {
     public partial class UpdateWindow {
         public MainWindow MainWindow;
 
@@ -55,14 +69,14 @@ namespace OsuModeManager {
                     CloseButton.Visibility = Visibility.Visible;
                 }
                 MainGrid.IsEnabled = true;
-            }, System.Windows.Threading.DispatcherPriority.Normal);
+            }, DispatcherPriority.Normal);
         }
 
         async void UpdateAllButton_Click(object Sender, RoutedEventArgs E) {
             MainGrid.IsEnabled = false;
             for (int G = GamemodeReleases.Count - 1; G >= 0; G--) {
                 await Update(G);
-                Dispatcher.Invoke(UpdateList.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget, System.Windows.Threading.DispatcherPriority.Normal);
+                Dispatcher.Invoke(UpdateList.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget, DispatcherPriority.Normal);
             }
 
             if (FilesRecycled) {
@@ -75,7 +89,7 @@ namespace OsuModeManager {
                     CloseButton.Visibility = Visibility.Visible;
                 }
                 MainGrid.IsEnabled = true;
-            }, System.Windows.Threading.DispatcherPriority.Normal);
+            }, DispatcherPriority.Normal);
         }
 
         public async Task Update(int SelectedIndex) {
@@ -111,7 +125,7 @@ namespace OsuModeManager {
             if (Destination == null || !Destination.Exists) {
                 Dispatcher.Invoke(() => {
                     MessageBox.Show("Selected osu!lazer installation path is invalid.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                }, System.Windows.Threading.DispatcherPriority.Normal);
+                }, DispatcherPriority.Normal);
                 MainWindow.UpdateLazerInstallationPath(false);
                 return false;
             }
@@ -159,7 +173,7 @@ namespace OsuModeManager {
 
         void CloseButton_Click(object Sender, RoutedEventArgs E) => Close();
 
-        void UpdateList_MouseDoubleClick(object Sender, System.Windows.Input.MouseButtonEventArgs E) {
+        void UpdateList_MouseDoubleClick(object Sender, MouseButtonEventArgs E) {
             int SelectedIndex = UpdateList.SelectedIndex;
             if (SelectedIndex >= 0) {
                 Release Release = GamemodeReleases[DisplayGamemodes[SelectedIndex]];

@@ -1,11 +1,26 @@
-﻿using System;
+﻿#region Copyright (C) 2017-2020  Starflash Studios
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License (Version 3.0)
+// as published by the Free Software Foundation.
+// 
+// More information can be found here: https://www.gnu.org/licenses/gpl-3.0.en.html
+#endregion
+
+#region Using Directives
+
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using MahApps.Metro.IconPacks;
 using Octokit;
+using OsuModeManager.Extensions;
+using OsuModeManager.Windows;
+
+#endregion
 
 namespace OsuModeManager {
     public struct Gamemode : IEquatable<Gamemode>, ICloneable {
@@ -17,7 +32,7 @@ namespace OsuModeManager {
 
         public UpdateStatus UpdateStatus;
 
-        public System.Windows.Visibility DisplayAnyIcon => UpdateStatus == UpdateStatus.Unchecked ? System.Windows.Visibility.Hidden : System.Windows.Visibility.Visible;
+        public Visibility DisplayAnyIcon => UpdateStatus == UpdateStatus.Unchecked ? Visibility.Collapsed : Visibility.Visible;
 
         public PackIconMaterialKind DisplayIconType {
             get {
@@ -148,7 +163,7 @@ namespace OsuModeManager {
         public override int GetHashCode() {
             unchecked {
                 // ReSharper disable NonReadonlyMemberInGetHashCode
-                int HashCode = (GitHubUser != null ? GitHubUser.GetHashCode() : 0);
+                int HashCode = GitHubUser != null ? GitHubUser.GetHashCode() : 0;
                 HashCode = (HashCode * 397) ^ (GitHubRepo != null ? GitHubRepo.GetHashCode() : 0);
                 HashCode = (HashCode * 397) ^ (GitHubTagVersion != null ? GitHubTagVersion.GetHashCode() : 0);
                 HashCode = (HashCode * 397) ^ (RulesetFilename != null ? RulesetFilename.GetHashCode() : 0);
@@ -171,10 +186,4 @@ namespace OsuModeManager {
         #endregion
     }
 
-    public enum UpdateStatus {
-        Unchecked,
-        UpToDate,
-        UpdateRequired,
-        FileMissing
-    }
 }
