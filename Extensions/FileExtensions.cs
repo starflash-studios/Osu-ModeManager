@@ -18,7 +18,6 @@ using System.Security.Cryptography;
 using System.Text;
 using Ookii.Dialogs.Wpf;
 using Shell32;
-using Syroot.Windows.IO;
 
 #endregion
 
@@ -115,17 +114,6 @@ namespace OsuModeManager.Extensions {
         #endregion
 
         #region Directories
-        /// <summary>Creates a <see cref="DirectoryInfo"/> from a given <see cref="KnownFolderType"/> by constructing a new <see cref="KnownFolder"/>. </summary>
-        /// <param name="KnownFolderType">The known folder type.</param>
-        /// <returns><see cref="DirectoryInfo"/></returns>
-        public static DirectoryInfo GetDirectoryInfo(this KnownFolderType KnownFolderType) => new KnownFolder(KnownFolderType).GetDirectoryInfo();
-
-        /// <summary>Creates a <see cref="DirectoryInfo"/> from a given <see cref="KnownFolder"/>. </summary>
-        /// <param name="KnownFolder">The known folder.</param>
-        /// <returns><see cref="DirectoryInfo"/></returns>
-        public static DirectoryInfo GetDirectoryInfo(this KnownFolder KnownFolder) => TryParseDirectoryInfo(KnownFolder.Path, out DirectoryInfo DirectoryInfo) ? DirectoryInfo : null;
-
-
         /// <summary>Creates a <see cref="DirectoryInfo"/> from a given <see cref="Environment.SpecialFolder"/> by utilising <see cref="Environment.GetFolderPath(Environment.SpecialFolder)"/>. </summary>
         /// <param name="SpecialFolder">The special folder.</param>
         /// <returns><see cref="FileInfo"/></returns>

@@ -19,13 +19,11 @@ using System.Windows;
 using System.Windows.Threading;
 using Octokit;
 using OsuModeManager.Extensions;
-using Syroot.Windows.IO;
 
 #endregion
 
 namespace OsuModeManager.Windows {
     public partial class SelfUpdateWindow {
-        public static DirectoryInfo Downloads = KnownFolderType.DownloadsLocalized.GetDirectoryInfo();
         public const string GitHubCreator = "starflash-studios";
         public const string GitHubRepo = "Osu-ModeManager";
 
@@ -76,7 +74,7 @@ namespace OsuModeManager.Windows {
         }
 
         void DownloadButton_Click(object Sender, RoutedEventArgs E) {
-            if (_LatestRelease != null && Downloads.TryGetRelativeFile("Release.zip", out FileInfo Destination)) {
+            if (_LatestRelease != null && FoldersLib.Downloads.TryGetRelativeFile("Release.zip", out FileInfo Destination)) {
                 foreach (ReleaseAsset Asset in _LatestRelease.Assets.Where(Asset => Asset.Name.Equals("release.zip", StringComparison.InvariantCultureIgnoreCase))) {
                     Dispatcher.Invoke(() => {
                         DownloadButton.IsEnabled = false;
@@ -106,14 +104,13 @@ namespace OsuModeManager.Windows {
 
         void Client_DownloadFileCompleted(object Sender, AsyncCompletedEventArgs E) {
             Debug.WriteLine("Download complete!");
-            Downloads.OpenInExplorer();
+            FoldersLib.Downloads.OpenInExplorer();
             Close();
         }
 
         void MetroWindow_Closing(object Sender, CancelEventArgs E) => _Caller?.Show();
 
-        static readonly string[] _SizeSuffixes =
-            { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+        static readonly string[] _SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
         static string SizeSuffix(long Value) {
             if (Value < 0) { return "-" + SizeSuffix(-Value); }
